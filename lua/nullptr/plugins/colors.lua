@@ -1,0 +1,14 @@
+return {
+	"https://github.com/nyoom-engineering/oxocarbon.nvim",
+	lazy = false,
+	priority = 1000,
+	config = function()
+		vim.opt.background = "dark" -- set this to dark or light
+		vim.cmd.colorscheme("oxocarbon")
+
+		-- for transparency
+		vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+		vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+		vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
+	end,
+}

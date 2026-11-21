@@ -6,6 +6,8 @@ return {
 		"antoinemadec/FixCursorHold.nvim",
 		"nvim-treesitter/nvim-treesitter",
 		"nvim-neotest/neotest-plenary",
+		"alfaix/neotest-gtest",
+		"mfussenegger/nvim-dap",
 	},
 	config = function()
 		local neotest = require("neotest")
@@ -13,6 +15,9 @@ return {
 		neotest.setup({
 			adapters = {
 				require("neotest-plenary"),
+				require("neotest-gtest").setup({
+					debug_adapter = "codelldb",
+				}),
 			},
 		})
 
@@ -29,8 +34,13 @@ return {
 		end, { desc = "Test: Run suite" })
 
 		vim.keymap.set("n", "<leader>td", function()
-			vim.notify("neotest-plenary does not support DAP debugging", vim.log.levels.WARN)
-		end, { desc = "Test: Debug nearest test (unsupported)" })
+			if vim.bo.filetype == "lua" then
+				vim.notify("neotest-plenary does not support DAP debugging", vim.log.levels.WARN)
+				return
+			end
+
+			neotest.run.run({ strategy = "dap" })
+		end, { desc = "Test: Debug nearest test" })
 
 		vim.keymap.set("n", "<leader>to", function()
 			neotest.output.open()

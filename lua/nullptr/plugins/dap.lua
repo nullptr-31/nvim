@@ -27,6 +27,31 @@ return {
 			},
 		}
 
+		dap.adapters.codelldb = {
+			type = "server",
+			port = "${port}",
+			executable = {
+				command = "codelldb",
+				args = { "--port", "${port}" },
+			},
+		}
+
+		dap.configurations.cpp = {
+			{
+				name = "Launch executable",
+				type = "codelldb",
+				request = "launch",
+				program = function()
+					return vim.fn.input("Executable: ", vim.fn.getcwd() .. "/", "file")
+				end,
+				cwd = "${workspaceFolder}",
+				stopOnEntry = false,
+				args = {},
+			},
+		}
+
+		dap.configurations.c = vim.deepcopy(dap.configurations.cpp)
+
 		vim.keymap.set("n", "<F8>", dap.continue, { desc = "Debug: Continue" })
 		vim.keymap.set("n", "<F10>", dap.step_over, { desc = "Debug: Step Over" })
 		vim.keymap.set("n", "<F11>", dap.step_into, { desc = "Debug: Step Into" })

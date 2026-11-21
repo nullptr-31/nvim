@@ -42,9 +42,18 @@ return {
 			},
 		})
 
+		vim.lsp.config("clangd", {
+			capabilities = capabilities,
+			cmd = {
+				"clangd",
+				"--background-index",
+				"--clang-tidy",
+			},
+		})
+
 		require("mason-lspconfig").setup({
-			ensure_installed = { "lua_ls" },
-			automatic_enable = { "lua_ls" },
+			ensure_installed = { "lua_ls", "clangd" },
+			automatic_enable = { "lua_ls", "clangd" },
 		})
 
 		local cmp = require("cmp")
